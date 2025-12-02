@@ -11,58 +11,61 @@
     </record>
 
     <template id="employee_eos_report">
-        <t t-call="web.external_layout">
-            <div class="page">
-                <h2>End of Service Report</h2>
-                <t t-foreach="docs" t-as="doc">
-                    <div class="mt16">
-                        <h3 t-esc="doc['employee'].name"/>
-                        <table class="table table-sm o_main_table">
-                            <tr>
-                                <th>Job Position</th>
-                                <td t-esc="doc['employee'].job_title or ''"/>
-                                <th>Department</th>
-                                <td t-esc="doc['employee'].department_id.name or ''"/>
-                            </tr>
-                            <tr>
-                                <th>Contract Start</th>
-                                <td t-esc="doc['start_date']"/>
-                                <th>Contract End</th>
-                                <td t-esc="doc['end_date']"/>
-                            </tr>
-                            <tr>
-                                <th>Duration</th>
-                                <td colspan="3">
-                                    <t t-esc="doc['duration']['years']"/> years,
-                                    <t t-esc="doc['duration']['months']"/> months,
-                                    <t t-esc="doc['duration']['days']"/> days
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Total Days (360 calendar)</th>
-                                <td t-esc="doc['duration']['total_days']"/>
-                                <th>Remaining <t t-esc="doc['leave_type_name']"/> (days)</th>
-                                <td t-esc="'%.2f' % doc['remaining_leaves']"/>
-                            </tr>
-                        </table>
+        <t t-call="web.basic_layout">
+            <t t-set="has_zero_margin" t-value="True"/>
+            <main class="o_report_layout">
+                <div class="page">
+                    <h2>End of Service Report</h2>
+                    <t t-foreach="docs" t-as="doc">
+                        <div class="mt16">
+                            <h3 t-esc="doc['employee'].name"/>
+                            <table class="table table-sm o_main_table">
+                                <tr>
+                                    <th>Job Position</th>
+                                    <td t-esc="doc['employee'].job_title or ''"/>
+                                    <th>Department</th>
+                                    <td t-esc="doc['employee'].department_id.name or ''"/>
+                                </tr>
+                                <tr>
+                                    <th>Contract Start</th>
+                                    <td t-esc="doc['start_date']"/>
+                                    <th>Contract End</th>
+                                    <td t-esc="doc['end_date']"/>
+                                </tr>
+                                <tr>
+                                    <th>Duration</th>
+                                    <td colspan="3">
+                                        <t t-esc="doc['duration']['years']"/> years,
+                                        <t t-esc="doc['duration']['months']"/> months,
+                                        <t t-esc="doc['duration']['days']"/> days
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Total Days (360 calendar)</th>
+                                    <td t-esc="doc['duration']['total_days']"/>
+                                    <th>Remaining <t t-esc="doc['leave_type_name']"/> (days)</th>
+                                    <td t-esc="'%.2f' % doc['remaining_leaves']"/>
+                                </tr>
+                            </table>
 
-                        <table class="table table-sm o_main_table mt8">
-                            <tr>
-                                <th>EOS Benefit</th>
-                                <td t-esc="doc['eos_amount']"/>
-                            </tr>
-                            <tr>
-                                <th>Outstanding Deductions (Loans / Attachments)</th>
-                                <td t-esc="doc['outstanding_deductions']"/>
-                            </tr>
-                            <tr>
-                                <th>Net EOS Payable</th>
-                                <td t-esc="doc['net_eos_amount']"/>
-                            </tr>
-                        </table>
-                    </div>
-                </t>
-            </div>
+                            <table class="table table-sm o_main_table mt8">
+                                <tr>
+                                    <th>EOS Benefit</th>
+                                    <td t-esc="doc['eos_amount']"/>
+                                </tr>
+                                <tr>
+                                    <th>Outstanding Deductions (Loans / Attachments)</th>
+                                    <td t-esc="doc['outstanding_deductions']"/>
+                                </tr>
+                                <tr>
+                                    <th>Net EOS Payable</th>
+                                    <td t-esc="doc['net_eos_amount']"/>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </div>
+            </main>
         </t>
     </template>
 </odoo>
