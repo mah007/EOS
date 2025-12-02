@@ -96,7 +96,7 @@ class HREmployee(models.Model):
         LeaveType = self.env['hr.leave.type']
         annual_types = LeaveType.search([
             ('time_type', '=', 'leave'),
-            '|', ('code', 'ilike', 'annual'), ('name', 'ilike', 'annual'),
+            ('name', 'ilike', 'annual'),
         ])
 
         if not annual_types:
