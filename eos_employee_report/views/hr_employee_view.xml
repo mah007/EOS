@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="%(action_eos_leave_wizard)d" type="action" string="End of Service Report" class="oe_highlight" context="{'default_employee_id': active_id}"/>
+                <button name="%(action_eos_leave_wizard)d" type="action" string="End of Service Report" class="oe_highlight" context="{'default_employee_id': id}"/>
             </xpath>
         </field>
     </record>
