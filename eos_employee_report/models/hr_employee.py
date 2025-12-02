@@ -9,10 +9,16 @@ class HREmployee(models.Model):
 
     def action_print_eos_report(self):
         self.ensure_one()
-        action = self.env.ref('eos_employee_report.action_report_employee_eos', raise_if_not_found=False)
+        action = self.env.ref('eos_employee_report.action_eos_leave_wizard', raise_if_not_found=False)
         if not action:
-            raise UserError('The End of Service report action is missing. Please update the module.')
-        return action.report_action(self)
+            raise UserError('The End of Service wizard action is missing. Please update the module.')
+        result = action.read()[0]
+        result['context'] = {
+            'default_employee_id': self.id,
+            'active_id': self.id,
+            'active_ids': self.ids,
+        }
+        return result
 
     def _get_primary_contract(self):
         self.ensure_one()
@@ -91,29 +97,30 @@ class HREmployee(models.Model):
         currency = contract.company_id.currency_id or self.company_id.currency_id
         return currency.round(eos_amount)
 
-    def _get_annual_leave_balance(self):
+    def _get_leave_balance(self, leave_type=None):
         self.ensure_one()
         LeaveType = self.env['hr.leave.type']
-        annual_types = LeaveType.search([
+
+        leave_types = LeaveType.browse(leave_type) if leave_type else LeaveType.search([
             ('time_type', '=', 'leave'),
             ('name', 'ilike', 'annual'),
         ])
 
-        if not annual_types:
+        if not leave_types:
             return self.remaining_leaves or 0.0
 
         allocations = self.env['hr.leave.allocation'].search([
             ('employee_id', '=', self.id),
             ('state', '=', 'validate'),
             ('holiday_type', '=', 'employee'),
-            ('holiday_status_id', 'in', annual_types.ids),
+            ('holiday_status_id', 'in', leave_types.ids),
         ])
         allocation_days = sum(alloc.number_of_days_display for alloc in allocations)
 
         leaves = self.env['hr.leave'].search([
             ('employee_id', '=', self.id),
             ('state', 'in', ['validate', 'validate1']),
-            ('holiday_status_id', 'in', annual_types.ids),
+            ('holiday_status_id', 'in', leave_types.ids),
         ])
         taken_days = sum(leave.number_of_days_display for leave in leaves)
         return allocation_days - taken_days
@@ -152,7 +159,7 @@ class HREmployee(models.Model):
 
         return total
 
-    def _prepare_eos_report_data(self):
+    def _prepare_eos_report_data(self, leave_type_id=None):
         self.ensure_one()
         contract = self._get_primary_contract()
         start_date, end_date = (None, None)
@@ -165,7 +172,9 @@ class HREmployee(models.Model):
             'total_days': 0,
         }
         eos_amount = self._compute_eos_amount(contract, duration) if contract else 0.0
-        remaining_leaves = self._get_annual_leave_balance()
+
+        leave_type = self.env['hr.leave.type'].browse(leave_type_id) if leave_type_id else None
+        remaining_leaves = self._get_leave_balance(leave_type)
         outstanding_deductions = self._get_outstanding_deductions()
 
         return {
@@ -176,6 +185,7 @@ class HREmployee(models.Model):
             'duration': duration,
             'eos_amount': eos_amount,
             'remaining_leaves': remaining_leaves,
+            'leave_type_name': leave_type.display_name if leave_type else 'Annual Leave',
             'outstanding_deductions': outstanding_deductions,
             'net_eos_amount': eos_amount - outstanding_deductions,
         }

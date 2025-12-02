@@ -41,7 +41,7 @@
                             <tr>
                                 <th>Total Days (360 calendar)</th>
                                 <td t-esc="doc['duration']['total_days']"/>
-                                <th>Remaining Annual Leave (days)</th>
+                                <th>Remaining <t t-esc="doc['leave_type_name']"/> (days)</th>
                                 <td t-esc="'%.2f' % doc['remaining_leaves']"/>
                             </tr>
                         </table>

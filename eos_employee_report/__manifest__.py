@@ -8,6 +8,8 @@
     'category': 'Human Resources',
     'depends': ['hr', 'hr_contract', 'hr_holidays'],
     'data': [
+        'security/ir.model.access.csv',
+        'views/eos_leave_wizard_view.xml',
         'views/hr_employee_view.xml',
         'report/hr_eos_report_templates.xml',
     ],
