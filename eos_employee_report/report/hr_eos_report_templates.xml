@@ -1,13 +1,14 @@
 <odoo>
-    <report
-        id="action_report_employee_eos"
-        string="End of Service Report"
-        model="hr.employee"
-        report_type="qweb-pdf"
-        name="eos_employee_report.employee_eos_report"
-        file="eos_employee_report.employee_eos_report"
-        print_report_name="(object.name or 'Employee') + ' - End of Service'"
-    />
+    <record id="action_report_employee_eos" model="ir.actions.report">
+        <field name="name">End of Service Report</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">eos_employee_report.employee_eos_report</field>
+        <field name="report_file">eos_employee_report.employee_eos_report</field>
+        <field name="print_report_name">(object.name or 'Employee') + ' - End of Service'</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_type">report</field>
+    </record>
 
     <template id="employee_eos_report">
         <t t-call="web.external_layout">

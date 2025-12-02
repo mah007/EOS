@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models
+from odoo.exceptions import UserError
 
 
 class HREmployee(models.Model):
@@ -8,7 +9,10 @@ class HREmployee(models.Model):
 
     def action_print_eos_report(self):
         self.ensure_one()
-        return self.env.ref('eos_employee_report.action_report_employee_eos').report_action(self)
+        action = self.env.ref('eos_employee_report.action_report_employee_eos', raise_if_not_found=False)
+        if not action:
+            raise UserError('The End of Service report action is missing. Please update the module.')
+        return action.report_action(self)
 
     def _get_primary_contract(self):
         self.ensure_one()
