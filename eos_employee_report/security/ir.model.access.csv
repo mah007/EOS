@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+action_eos_leave_wizard_access,eos.employee.leave.wizard,model_eos_employee_leave_wizard,base.group_user,1,1,1,1
