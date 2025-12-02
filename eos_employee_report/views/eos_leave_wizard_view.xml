@@ -1,0 +1,25 @@
+<odoo>
+    <record id="action_eos_leave_wizard" model="ir.actions.act_window">
+        <field name="name">End of Service Report</field>
+        <field name="res_model">eos.employee.leave.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_eos_leave_wizard_form" model="ir.ui.view">
+        <field name="name">eos.employee.leave.wizard.form</field>
+        <field name="model">eos.employee.leave.wizard</field>
+        <field name="arch" type="xml">
+            <form string="End of Service Report">
+                <group>
+                    <field name="employee_id" readonly="1"/>
+                    <field name="leave_type_id" options="{'no_create': True}"/>
+                </group>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button name="action_print" type="object" string="Print" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
