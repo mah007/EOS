@@ -112,7 +112,6 @@ class HREmployee(models.Model):
         allocations = self.env['hr.leave.allocation'].search([
             ('employee_id', '=', self.id),
             ('state', '=', 'validate'),
-            ('holiday_type', '=', 'employee'),
             ('holiday_status_id', 'in', leave_types.ids),
         ])
         allocation_days = sum(alloc.number_of_days_display for alloc in allocations)
