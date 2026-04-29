@@ -85,3 +85,4 @@ the report must contain the remaining balance of annual vacation days left in hi
 the total duration of his work from start and end date of his contract 
 days , months , years 
 and chick if he has loan in his salary attachment not settle yet to deduct from his end of service benefits
+18.0
