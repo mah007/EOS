@@ -81,6 +81,7 @@ if start_date and end_date:
 # rounding
 result = payslip.company_id.currency_id.round(result)
 i want a button in hr.employee form view to click to print me the report 
+test
 the report must contain the remaining balance of annual vacation days left in his allocation 
 the total duration of his work from start and end date of his contract 
 days , months , years 
